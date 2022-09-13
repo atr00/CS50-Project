@@ -47,24 +47,24 @@ class Option:
 
 
     def __repr__(self):
-        str_repr = 'Option({side},{undl},{size},{type},{strike},{expi})'
+        str_repr = 'Option({side},{undl},{size},{opt_type},{strike},{expi})'
         str_expiry = self.expiry_date.strftime('%Y-%m-%d')
-        return str_repr.format(side = self.side,
-                               undl = self.underlying,
-                               size = self.size,
-                               type = self.opt_type,
-                               strike = self.K,
-                               expi = str_expiry)
+        return str_repr.format(side     = self.side,
+                               undl     = self.underlying,
+                               size     = self.size,
+                               opt_type = self.opt_type,
+                               strike   = self.K,
+                               expi     = str_expiry)
 
     def __str__(self):
-        str_repr = '{side:<9s} {undl:<9s} {size:<9.2f} {type:<9s} {strike:<9.2f} {expi}'
+        str_repr = '{side:<9s} {undl:<9s} {size:<9.2f} {opt_type:<9s} {strike:<9.2f} {expi}'
         str_expiry = self.expiry_date.strftime('%Y-%m-%d')
-        return str_repr.format(side = self.side,
-                               undl = self.underlying,
-                               size = self.size,
-                               type = self.opt_type,
-                               strike = self.K,
-                               expi = str_expiry)
+        return str_repr.format(side     = self.side,
+                               undl     = self.underlying,
+                               size     = self.size,
+                               opt_type = self.opt_type,
+                               strike   = self.K,
+                               expi     = str_expiry)
 
     @property
     def deribit_undl(self):
@@ -215,19 +215,17 @@ class OptionPortfolio:
 
     def __init__(self):
         self.strategy = []
+        
+    def __repr__(self):
+        obj = 'object' if len(self) < 2 else 'objects'
+        str_repr = 'OptionPortfolio({} {})'
+        return str_repr.format(len(self), obj)
 
     def __str__(self):
-        if len(self.strategy) == 0:
-            desc = 'empty strategy'
-        else :
-            desc =''
-            i = 1
-
-        for opt in self.strategy:
-            desc += "{:03} - {}\n".format(i, opt)
-            i += 1
-
-        return desc
+        return self.to_df.to_string()
+    
+    def __len__(self):
+        return len(self.strategy)
 
     @property
     def unique_undls(self):
@@ -275,25 +273,25 @@ class OptionPortfolio:
         Aggregated values by expiries
         """
         expiries = self.unique_expiries
-        undls = self.unique_undls
-        price1 = []
-        price2 = []
-        delta = []
-        vega = []
-        gamma = []
-        theta = []
+        undls    = self.unique_undls
+        price1   = []
+        price2   = []
+        delta    = []
+        vega     = []
+        gamma    = []
+        theta    = []
 
         res = {}
         for undl in undls: 
             exp_dict = {}
             for expiry in expiries[undl]:
                 tmp_dict = {}
-                _price1 = 0
-                _price2 = 0
-                _delta = 0
-                _vega = 0
-                _gamma = 0
-                _theta = 0
+                _price1  = 0
+                _price2  = 0
+                _delta   = 0
+                _vega    = 0
+                _gamma   = 0
+                _theta   = 0
                 
                 options = [opt for opt in self.strategy if opt.expiry == expiry and opt.underlying == undl]
                 for opt in options:
