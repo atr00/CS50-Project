@@ -6,3 +6,4 @@ datetime
 re
 scipy
 nest_asyncio
+websockets
