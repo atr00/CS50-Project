@@ -5,3 +5,4 @@ seaborn
 datetime
 re
 scipy
+nest_asyncio
