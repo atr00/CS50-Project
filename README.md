@@ -52,3 +52,10 @@ Several helper functions are in this file:
 - is_date(date): verifies that the date provided is an instance of dt.date or dt.datetime or a valid tenor.
 - generate_schedule: Return an array of pd.Timesteamp. e.g. sched = generate_schedule('0d', '3M', '1M')
 - is_notebook: returns True if the file is run from a notebook, False otherwise.
+
+
+## OptionViz.ipynb
+This is the main file that can be launched as a standalone web-app using voila.
+It is used to construct a strategy with options and display its analytics.
+It uses prices from Deribit and the pricing library found in options.py to compute it.
+Users can also reset the strategy and start from scratch.
