@@ -379,23 +379,19 @@ class OptionPortfolio:
         if subplots_nb == 1:
             x_axis = np.linspace(a_min, a_max, 1000)
             y_axis = self.get_payoffs_sum(x_axis, undl, unique_exp[0])
-            sns.lineplot(x = x_axis, y = y_axis)
+            sns.lineplot(x = x_axis, y = y_axis).set(title=undl)
         else:
             i = 0
             y_axes = []
-            fig, axes = plt.subplots(subplots_nb, 1, sharey='col', figsize=(10, 8))
-            #fig.suptitle('Payoff for each Expiry')
-            plt.tight_layout()
+            fig, axes = plt.subplots(subplots_nb, 1, sharey=False, figsize=(6, 4 * subplots_nb))
+            fig.suptitle(undl, fontsize=16)
 
-            for exp in unique_exp:
-                df_temp = df[df['expiry'] == exp]
+            for exp in unique_exp:                
                 x_axis = np.linspace(a_min, a_max, 1000)
-
                 y_axis = self.get_payoffs_sum(x_axis, undl, exp)
                 y_axes.append(y_axis)
-                sns.lineplot(ax = axes[i], x = x_axis, y = y_axes[i])
                 str_title = pd.to_datetime(exp).strftime('%d %b %Y')
-                axes[i].set_title(str_title)
+                sns.lineplot(ax = axes[i], x = x_axis, y = y_axes[i]).set_title(str_title)
                 i += 1
 
 
