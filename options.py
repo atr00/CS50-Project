@@ -6,6 +6,8 @@ import seaborn as sns
 from helper import *
 from deribit import client
 
+pd.options.display.float_format = '{:,.2f}'.format
+
 
 class Option:
 
@@ -168,7 +170,7 @@ class Option:
 
     def price(self, F, σ, r_dom = 0.0, r_fgn = 0.0):
         res = {}
-        mult = 1 if self.side == 1 else -1
+        mult = 1 if self.side == 'buy' else -1
         if self.opt_type.upper() == 'CALL':
             res['price1'] = {
               'value': self._call_value_cur1(F, σ, r_dom, r_fgn) * mult,
@@ -379,11 +381,18 @@ class OptionPortfolio:
         if subplots_nb == 1:
             x_axis = np.linspace(a_min, a_max, 1000)
             y_axis = self.get_payoffs_sum(x_axis, undl, unique_exp[0])
-            sns.lineplot(x = x_axis, y = y_axis).set(title=undl)
+            str_title = pd.to_datetime(unique_exp[0]).strftime('%d %b %Y')
+            fig, ax = plt.subplots(1, 1, figsize=(8, 4))
+            sns.lineplot(ax = ax, x = x_axis, y = y_axis).set_title(str_title)
+            fig.suptitle(undl, fontsize=16)
+            fig.tight_layout()
+            plt.close()
+            return fig
+
         else:
             i = 0
             y_axes = []
-            fig, axes = plt.subplots(subplots_nb, 1, sharey=False, figsize=(6, 4 * subplots_nb))
+            fig, axes = plt.subplots(subplots_nb, 1, sharey=False, figsize=(8, 4 * subplots_nb))
             fig.suptitle(undl, fontsize=16)
 
             for exp in unique_exp:                
@@ -393,6 +402,11 @@ class OptionPortfolio:
                 str_title = pd.to_datetime(exp).strftime('%d %b %Y')
                 sns.lineplot(ax = axes[i], x = x_axis, y = y_axes[i]).set_title(str_title)
                 i += 1
+
+            plt.close()
+            return fig
+
+        return None
 
 
 class BullishStrategy(OptionPortfolio):
