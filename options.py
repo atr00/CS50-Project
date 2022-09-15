@@ -168,43 +168,44 @@ class Option:
 
     def price(self, F, σ, r_dom = 0.0, r_fgn = 0.0):
         res = {}
+        mult = 1 if self.side == 1 else -1
         if self.opt_type.upper() == 'CALL':
             res['price1'] = {
-              'value': self._call_value_cur1(F, σ, r_dom, r_fgn),
+              'value': self._call_value_cur1(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur1
             }
             res['price2'] = {
-              'value': self._call_value_cur2(F, σ, r_dom, r_fgn),
+              'value': self._call_value_cur2(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur2
             }      
             res['delta'] = {
-              'value': self._call_delta(F, σ, r_dom, r_fgn),
+              'value': self._call_delta(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur1
             }
         elif self.opt_type.upper() == 'PUT':
             res['price1'] = {
-              'value': self._put_value_cur1(F, σ, r_dom, r_fgn),
+              'value': self._put_value_cur1(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur1
             }
             res['price2'] = {
-              'value': self._put_value_cur2(F, σ, r_dom, r_fgn),
+              'value': self._put_value_cur2(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur2
             }      
             res['delta'] = {
-              'value': self._put_delta(F, σ, r_dom, r_fgn),
+              'value': self._put_delta(F, σ, r_dom, r_fgn) * mult,
               'quote': self.cur1
             }      
 
         res['vega'] = {
-            'value': self._vega(F, σ, r_dom, r_fgn),
+            'value': self._vega(F, σ, r_dom, r_fgn) * mult,
             'quote': self.cur2
         }
         res['gamma'] = {
-            'value': self._gamma(F, σ, r_dom, r_fgn),
+            'value': self._gamma(F, σ, r_dom, r_fgn) * mult,
             'quote': self.cur1
         }
         res['theta'] = {
-            'value': self._gamma(F, σ, r_dom, r_fgn),
+            'value': self._gamma(F, σ, r_dom, r_fgn) * mult,
             'quote': self.cur2
         } 
 
