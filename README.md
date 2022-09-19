@@ -59,3 +59,7 @@ This is the main file that can be launched as a standalone web-app using voila.
 It is used to construct a strategy with options and display its analytics.
 It uses prices from Deribit and the pricing library found in options.py to compute it.
 Users can also reset the strategy and start from scratch.
+
+#### Standalone Webapp
+The notebook can be launched as a standalone webapp using [Voila](https://voila.readthedocs.io/en/stable/).
+Just use the command `https://voila.readthedocs.io/en/stable/`.
